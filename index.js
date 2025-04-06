@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import connectDB from "./db/index.js";
-
+import AuthRouter from "./Routes/AuthRouter.js"; 
 
 
 
@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 
 // ✅ Get architect images
 
-
+app.use("/auth", AuthRouter);
 
 // ✅ Get project images
 const BASE_URL = "https://architect-ip-studios-backend.onrender.com";
