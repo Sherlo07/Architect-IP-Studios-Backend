@@ -4,7 +4,7 @@ import { validateRegister, validateLogin } from "../Middlewares/AuthValidation.j
 
 const router = express.Router();
 
-router.post("/signup", validateRegister, register);
+router.post("/register", validateRegister, register);
 
 router.post("/login", validateLogin, login);
 
