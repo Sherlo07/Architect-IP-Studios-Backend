@@ -15,9 +15,8 @@ const app = express();
 
 // ✅ Allowed origins
 const allowedOrigins = [
-  "http://localhost:5173",          // local dev
-  "http://localhost:5174",          // local dev (alternative port)
-  "https://architect-ip-studios.vercel.app", // live frontend
+  "http://localhost:5173",
+  "https://architect-ip-studios-1.onrender.com",
 ];
 
 // ✅ CORS middleware
