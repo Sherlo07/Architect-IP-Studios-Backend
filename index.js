@@ -16,27 +16,49 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 /* -------------------- CORS -------------------- */
-const allowedOrigins = [
+// Default allowed origins for local development and Vercel (keep as fallback)
+const defaultAllowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://architect-ip-studios.vercel.app",
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed for this origin"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200,
-  })
-);
+// Read extra allowed origins from env var (comma separated). Use '*' to allow all origins.
+const envAllowed = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((s) => s.trim()).filter(Boolean)
+  : [];
+
+// If ALLOWED_ORIGINS is exactly '*', enable permissive CORS (use with caution).
+if (process.env.ALLOWED_ORIGINS && process.env.ALLOWED_ORIGINS.trim() === "*") {
+  app.use(
+    cors({
+      origin: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+      optionsSuccessStatus: 200,
+    })
+  );
+} else {
+  const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envAllowed]));
+
+  app.use(
+    cors({
+      origin: function (origin, callback) {
+        // allow requests with no origin (like server-to-server, curl)
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("CORS not allowed for this origin"));
+        }
+      },
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization"],
+      optionsSuccessStatus: 200,
+    })
+  );
+}
 
 app.use(express.json());
 
