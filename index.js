@@ -1,3 +1,4 @@
+// backend/index.js
 import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
@@ -15,15 +16,15 @@ const app = express();
 
 // ✅ Allowed origins
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://architect-ip-studios-1.onrender.com",
+  "http://localhost:5173",          
+  "http://localhost:5174",          
+  "https://architect-ip-studios.vercel.app", 
 ];
 
 // ✅ CORS middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -33,7 +34,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
   })
 );
 
@@ -43,20 +44,17 @@ app.use(express.json());
 // ✅ Connect to MongoDB
 connectDB();
 
-// ✅ Static folders
+// ✅ Serve static images
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/projectImg", express.static(path.join(__dirname, "public/projectImg")));
 
 // ✅ Routes
-app.get("/", (req, res) => {
-  res.send("Server is ready");
-});
-
 app.use("/auth", AuthRouter);
 
-const BASE_URL = "https://architect-ip-studios-backend.onrender.com";
+// ✅ Base URL
+const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
 
-// Sample images
+// ✅ APIs
 app.get("/api/architectimages", (req, res) => {
   const architect = [
     { id: 1, url: `${BASE_URL}/images/archimg1.jpeg` },
@@ -81,7 +79,7 @@ app.get("/api/projects", (req, res) => {
   res.json(projectImages);
 });
 
-// ✅ Handle preflight OPTIONS requests for all routes
+// ✅ Handle preflight OPTIONS
 app.options("*", cors());
 
 // ✅ Error handling middleware
@@ -95,5 +93,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
