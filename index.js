@@ -53,7 +53,7 @@ const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
 /* -------------------- APIs -------------------- */
 app.get("/api/architectimages", (req, res) => {
   res.json([
-    { id: 1, url: `${BASE_URL}/images/archimg1.jpeg` },
+    { id: 1, url: `https://images.pexels.com/photos/29885889/pexels-photo-29885889.jpeg` },
     { id: 2, url: `${BASE_URL}/images/archimg2.webp` },
     { id: 3, url: `${BASE_URL}/images/archimg3.webp` },
     { id: 4, url: `${BASE_URL}/images/archimg4.jpeg` },
@@ -64,7 +64,7 @@ app.get("/api/architectimages", (req, res) => {
 
 app.get("/api/projects", (req, res) => {
   res.json([
-    { id: 1, url: `${BASE_URL}/projectImg/project1.jpeg` },
+    { id: 1, url: `https://images.pexels.com/photos/29885889/pexels-photo-29885889.jpeg` },
     { id: 2, url: `${BASE_URL}/projectImg/project2.webp` },
     { id: 3, url: `${BASE_URL}/projectImg/project3.jpeg` },
     { id: 4, url: `${BASE_URL}/projectImg/project4.jpeg` },
