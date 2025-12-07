@@ -1,4 +1,3 @@
-// backend/Models/index.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -9,6 +8,8 @@ const connectDB = async () => {
     if (!process.env.MONGO_URI) {
       throw new Error("MONGO_URI not defined");
     }
+
+    console.log("🔍 Using MONGO_URI:", process.env.MONGO_URI); // 👈 TEMPORARY: for Render logs
 
     const connection = await mongoose.connect(process.env.MONGO_URI);
 
